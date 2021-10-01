@@ -11,24 +11,27 @@ def get_serch_results(name):
 
 def get_seasons(series_id):
     seasons=requests.get(f'https://api.tvmaze.com/shows/{series_id}/seasons').json()
+    series_name=requests.get(f'https://api.tvmaze.com/shows/{series_id}').json['name']
     for season in seasons:
         season_id=season['id']
         season_num=season['number']
         num_of_episodes=season['episodeOrder']
         print(f'{season_id} {season_num} {num_of_episodes}')
 
-def get_episodes(season_id):
+def get_episodes(season_id,series_name):
     episodes=requests.get(f'https://api.tvmaze.com/seasons/{season_id}/episodes').json()
     for episode in episodes:
         episode_id=episode['id']
+        episode_num=episode['number']
+        season_num=episode['season']
         episode_name=episode['name']
-        print(f'{episode_id} {episode_name}')
+        print(f'{series_name}[{season_num}x{episode_num:02d}] {episode_name}')
         
 
 def main():
     # get_serch_results('girls')
     # get_seasons(23542)
-    get_episodes(109940)
+    get_episodes(109940,'girls')
 
 if __name__ =="__main__":
     main()
